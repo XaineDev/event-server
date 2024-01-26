@@ -1,13 +1,11 @@
 package dev.xaine
 
-import dev.xaine.server.commands.CommandGamemode
-import dev.xaine.server.commands.CommandGetNBT
-import dev.xaine.server.commands.CommandGiveItems
-import dev.xaine.server.commands.CommandTestGUI
 import dev.xaine.items.CustomItemHandler
 import dev.xaine.items.impl.ItemDecrementSpeed
 import dev.xaine.items.impl.ItemIncrementSpeed
+import dev.xaine.items.impl.ItemSkyblockMenu
 import dev.xaine.minigame.GameContainer
+import dev.xaine.server.commands.*
 import dev.xaine.server.listeners.ChunkUnloadListener
 import dev.xaine.server.listeners.PlayerJoinListener
 import mu.KotlinLogging
@@ -57,7 +55,7 @@ enum class Main {
         commandManager.register(CommandGiveItems())
         commandManager.register(CommandGetNBT())
         commandManager.register(CommandGamemode())
-        commandManager.register(CommandTestGUI())
+        commandManager.register(CommandTest())
         commandManager.unknownCommandCallback =
             CommandCallback { sender: CommandSender, _: String? ->
                 sender.sendMessage(
@@ -70,6 +68,7 @@ enum class Main {
         PlayerJoinListener().init()
     }
     private fun registerItems() {
+        itemHandler.put(ItemSkyblockMenu())
         itemHandler.put(ItemIncrementSpeed())
         itemHandler.put(ItemDecrementSpeed())
         itemHandler.init()

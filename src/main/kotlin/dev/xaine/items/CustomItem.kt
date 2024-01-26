@@ -7,7 +7,7 @@ import net.minestom.server.item.ItemStack
 import org.jglrxavpok.hephaistos.nbt.NBT
 import org.jglrxavpok.hephaistos.nbt.NBTCompound
 
-abstract class CustomItem(val itemName: String) {
+abstract class CustomItem(val itemName: String, val moveable: Boolean = true) {
     protected abstract val itemEvents: EventNode<Event>
     protected val defaultNBT: NBTCompound
 
@@ -19,7 +19,12 @@ abstract class CustomItem(val itemName: String) {
 
     abstract fun getItemStack(): ItemStack
 
-    abstract fun useItem(player: Player)
+    open fun useItem(player: Player) {
+
+    }
+    open fun movedItem(player: Player) {
+
+    }
 
 
 }

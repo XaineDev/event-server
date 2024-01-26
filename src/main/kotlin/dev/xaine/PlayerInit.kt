@@ -1,5 +1,6 @@
 package dev.xaine
 
+import dev.xaine.items.ItemCreator
 import net.kyori.adventure.resource.ResourcePackInfo
 import net.kyori.adventure.resource.ResourcePackRequest
 import net.kyori.adventure.text.Component
@@ -8,6 +9,7 @@ import net.minestom.server.coordinate.Pos
 import net.minestom.server.entity.Player
 import net.minestom.server.event.player.AsyncPlayerConfigurationEvent
 import net.minestom.server.event.player.PlayerDisconnectEvent
+import net.minestom.server.event.player.PlayerSpawnEvent
 import net.minestom.server.instance.AnvilLoader
 import net.minestom.server.instance.Instance
 import net.minestom.server.instance.InstanceContainer
@@ -38,6 +40,8 @@ class PlayerInit() {
                 }
         }
         fun init() {
+            val spawn = Pos(0.0, 40.0, 0.0)
+
             val eventHandler = MinecraftServer.getGlobalEventHandler()
             eventHandler.addListener(AsyncPlayerConfigurationEvent::class.java) {
                 val player: Player = it.player
@@ -54,8 +58,13 @@ class PlayerInit() {
                 val instance: Instance = MinecraftServer.getInstanceManager().instances.last()
                 instanceMap[player.uuid] = instance
                 it.spawningInstance = instance
-                player.respawnPoint = Pos(0.0, 40.0, 0.0)
+                player.respawnPoint = spawn
                 player.sendResourcePacks(resourcePackRequest!!)
+            }
+            eventHandler.addListener(PlayerSpawnEvent::class.java) { event ->
+                event.player.teleport(spawn)
+                Main.INSTANCE.getCustomItemHandler().get("SKYBLOCK_MENU")
+                    ?.let { item -> event.player.inventory.setItemStack(8, item.getItemStack()) }
             }
             eventHandler.addListener(PlayerDisconnectEvent::class.java) {
                 val instance = instanceMap[it.player.uuid] ?: return@addListener

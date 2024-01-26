@@ -1,7 +1,11 @@
 package dev.xaine.items
 
 import net.minestom.server.MinecraftServer
+import net.minestom.server.event.inventory.InventoryItemChangeEvent
+import net.minestom.server.event.inventory.InventoryPreClickEvent
+import net.minestom.server.event.inventory.PlayerInventoryItemChangeEvent
 import net.minestom.server.event.player.PlayerBlockPlaceEvent
+import net.minestom.server.event.player.PlayerSwapItemEvent
 import net.minestom.server.event.player.PlayerUseItemEvent
 import net.minestom.server.item.ItemStack
 
@@ -29,6 +33,12 @@ class CustomItemHandler {
             val customItem = validateCustomItem(heldItem) ?: return@addListener
             it.isCancelled = true
             customItem.useItem(it.player)
+        }
+        eventHandler.addListener(InventoryPreClickEvent::class.java) {
+            val item = it.clickedItem
+            val customItem = validateCustomItem(item) ?: return@addListener
+            customItem.movedItem(it.player)
+            it.isCancelled = !customItem.moveable
         }
     }
 

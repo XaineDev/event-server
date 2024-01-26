@@ -1,4 +1,4 @@
-package dev.xaine.commands
+package dev.xaine.server.commands
 
 import dev.xaine.Main
 import dev.xaine.items.impl.ItemIncrementSpeed

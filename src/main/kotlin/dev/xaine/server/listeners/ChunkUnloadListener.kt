@@ -1,4 +1,4 @@
-package dev.xaine.listener
+package dev.xaine.server.listeners
 
 import net.minestom.server.MinecraftServer
 import net.minestom.server.event.player.PlayerChunkUnloadEvent

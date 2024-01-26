@@ -1,4 +1,4 @@
-package dev.xaine.commands
+package dev.xaine.server.commands
 
 import net.minestom.server.command.builder.Command
 import net.minestom.server.command.builder.arguments.ArgumentEnum

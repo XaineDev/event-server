@@ -1,23 +1,12 @@
-package dev.xaine.listener
+package dev.xaine.server.listeners
 
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
 import net.minestom.server.MinecraftServer
-import net.minestom.server.advancements.FrameType
-import net.minestom.server.advancements.notifications.Notification
-import net.minestom.server.advancements.notifications.NotificationCenter
-import net.minestom.server.coordinate.Point
-import net.minestom.server.coordinate.Vec
-import net.minestom.server.entity.Entity
-import net.minestom.server.entity.EntityType
 import net.minestom.server.entity.Player
-import net.minestom.server.entity.metadata.display.AbstractDisplayMeta
-import net.minestom.server.entity.metadata.display.TextDisplayMeta
 import net.minestom.server.event.player.PlayerSpawnEvent
-import net.minestom.server.item.Material
-import net.minestom.server.scoreboard.Scoreboard
 import net.minestom.server.scoreboard.Sidebar
 
 

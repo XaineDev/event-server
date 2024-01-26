@@ -1,4 +1,4 @@
-package dev.xaine.commands
+package dev.xaine.server.commands
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor

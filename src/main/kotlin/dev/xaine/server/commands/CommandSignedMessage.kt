@@ -1,4 +1,4 @@
-package dev.xaine.commands
+package dev.xaine.server.commands
 
 import net.kyori.adventure.chat.SignedMessage
 import net.minestom.server.adventure.audience.Audiences

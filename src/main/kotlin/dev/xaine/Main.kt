@@ -1,7 +1,10 @@
 package dev.xaine
 
 import dev.xaine.items.ItemRepository
+import dev.xaine.items.impl.armor.azure.ItemAzureBoots
+import dev.xaine.items.impl.armor.azure.ItemAzureChestplate
 import dev.xaine.items.impl.armor.azure.ItemAzureHelmet
+import dev.xaine.items.impl.armor.azure.ItemAzureLeggings
 import dev.xaine.minigame.GameContainer
 import dev.xaine.server.commands.*
 import dev.xaine.server.listeners.ChunkUnloadListener
@@ -26,21 +29,28 @@ enum class Main {
     private var gameContainer = GameContainer()
 
     fun main() {
+        println("Starting Server...")
         MinecraftServer.setCompressionThreshold(0)
         val minecraftServer = MinecraftServer.init()
 
+        println("Setting up server list ping...")
         setupServerlist()
 
+        println("Registering Commands...")
         registerCommands()
 
+        println("Registering Custom Items...")
         registerItems()
+        println("Registering Event Listeners...")
         registerListeners()
 
 
         Runtime.getRuntime().addShutdownHook(Thread(MinecraftServer::stopCleanly))
+        println("Connecting to Auth Servers...")
         MojangAuth.init()
         PlayerInit.init()
 
+        println("Server Started.")
         minecraftServer.start("0.0.0.0", 25565)
     }
 
@@ -67,6 +77,9 @@ enum class Main {
     }
     private fun registerItems() {
         itemRepository.register(ItemAzureHelmet::class)
+        itemRepository.register(ItemAzureChestplate::class)
+        itemRepository.register(ItemAzureLeggings::class)
+        itemRepository.register(ItemAzureBoots::class)
     }
 
     private fun setupServerlist() {

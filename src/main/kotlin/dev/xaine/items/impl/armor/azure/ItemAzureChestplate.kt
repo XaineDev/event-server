@@ -16,9 +16,9 @@ import net.minestom.server.item.metadata.LeatherArmorMeta
 import net.minestom.server.tag.Tag
 import java.util.*
 
-class ItemAzureHelmet : Item("AZURE_HELMET") {
-    override val itemName = ComponentUtil.text("Azure Helmet").color(TextColor.color(0xbb80ff))
-    override val itemStackBuilder = ItemStack.builder(Material.LEATHER_HELMET).meta(LeatherArmorMeta::class.java) { meta ->
+class ItemAzureChestplate : Item("AZURE_CHESTPLATE") {
+    override val itemName = ComponentUtil.text("Azure Chestplate").color(TextColor.color(0xbb80ff))
+    override val itemStackBuilder = ItemStack.builder(Material.LEATHER_CHESTPLATE).meta(LeatherArmorMeta::class.java) { meta ->
         meta.color(
             Color(0xbb80ff)
         )

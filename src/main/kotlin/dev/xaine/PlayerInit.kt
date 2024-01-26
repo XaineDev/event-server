@@ -1,9 +1,7 @@
 package dev.xaine
 
-import dev.xaine.items.ItemCreator
 import net.kyori.adventure.resource.ResourcePackInfo
 import net.kyori.adventure.resource.ResourcePackRequest
-import net.kyori.adventure.text.Component
 import net.minestom.server.MinecraftServer
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.entity.Player
@@ -21,7 +19,7 @@ import java.util.*
 import kotlin.collections.HashMap
 
 
-class PlayerInit() {
+class PlayerInit {
     companion object {
 
         private var resourcePackRequest : ResourcePackRequest? = null
@@ -63,8 +61,6 @@ class PlayerInit() {
             }
             eventHandler.addListener(PlayerSpawnEvent::class.java) { event ->
                 event.player.teleport(spawn)
-                Main.INSTANCE.getCustomItemHandler().get("SKYBLOCK_MENU")
-                    ?.let { item -> event.player.inventory.setItemStack(8, item.getItemStack()) }
             }
             eventHandler.addListener(PlayerDisconnectEvent::class.java) {
                 val instance = instanceMap[it.player.uuid] ?: return@addListener

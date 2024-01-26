@@ -1,6 +1,5 @@
 package dev.xaine.menu.impl.menu
 
-import dev.xaine.items.ItemCreator
 import dev.xaine.menu.CustomMenu
 import dev.xaine.menu.MenuItems
 import net.minestom.server.inventory.Inventory

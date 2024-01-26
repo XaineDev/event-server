@@ -6,7 +6,7 @@ import net.minestom.server.entity.Player
 class GameUltraSequencer : Game("ultrasequencer") {
 
     override fun start(player: Player, gameData: HashMap<String, String>): Boolean {
-        return false;
+        return false
     }
 
     override fun run(player: Player) {

@@ -10,11 +10,8 @@ class GameContainer {
 
     val GAME_MAP = HashMap<KClass<out Game>, Game>()
     val ID_MAP = HashMap<String, KClass<out Game>>()
-    init {
-        addGame(GameUltraSequencer::class)
-    }
 
-    private fun addGame(gameClass: KClass<out Game>) {
+    fun register(gameClass: KClass<out Game>) {
         val gameInstance = gameClass.createInstance()
         GAME_MAP[gameClass] = gameInstance
         ID_MAP[gameInstance.getGameID()] = gameClass

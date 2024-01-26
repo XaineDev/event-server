@@ -1,9 +1,7 @@
 package dev.xaine
 
-import dev.xaine.items.CustomItemHandler
-import dev.xaine.items.impl.ItemDecrementSpeed
-import dev.xaine.items.impl.ItemIncrementSpeed
-import dev.xaine.items.impl.ItemSkyblockMenu
+import dev.xaine.items.ItemRepository
+import dev.xaine.items.impl.armor.azure.ItemAzureHelmet
 import dev.xaine.minigame.GameContainer
 import dev.xaine.server.commands.*
 import dev.xaine.server.listeners.ChunkUnloadListener
@@ -24,7 +22,7 @@ enum class Main {
     INSTANCE;
 
     val logger = KotlinLogging.logger {}
-    private var itemHandler = CustomItemHandler()
+    private var itemRepository = ItemRepository()
     private var gameContainer = GameContainer()
 
     fun main() {
@@ -39,15 +37,15 @@ enum class Main {
         registerListeners()
 
 
-        Runtime.getRuntime().addShutdownHook(Thread(MinecraftServer::stopCleanly));
+        Runtime.getRuntime().addShutdownHook(Thread(MinecraftServer::stopCleanly))
         MojangAuth.init()
         PlayerInit.init()
 
         minecraftServer.start("0.0.0.0", 25565)
     }
 
-    fun getCustomItemHandler(): CustomItemHandler {
-        return itemHandler
+    fun getItemRepository(): ItemRepository {
+        return itemRepository
     }
 
     private fun registerCommands() {
@@ -68,10 +66,7 @@ enum class Main {
         PlayerJoinListener().init()
     }
     private fun registerItems() {
-        itemHandler.put(ItemSkyblockMenu())
-        itemHandler.put(ItemIncrementSpeed())
-        itemHandler.put(ItemDecrementSpeed())
-        itemHandler.init()
+        itemRepository.register(ItemAzureHelmet::class)
     }
 
     private fun setupServerlist() {

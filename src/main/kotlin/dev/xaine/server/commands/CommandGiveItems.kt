@@ -1,31 +1,29 @@
 package dev.xaine.server.commands
 
 import dev.xaine.Main
-import dev.xaine.items.impl.ItemIncrementSpeed
 import net.minestom.server.command.builder.Command
+import net.minestom.server.command.builder.arguments.ArgumentString
 import net.minestom.server.command.builder.condition.Conditions
-import net.minestom.server.command.builder.condition.Conditions.playerOnly
 import net.minestom.server.entity.Player
 
-class CommandGiveItems() : Command("giveitems") {
+class CommandGiveItems : Command("giveitems") {
 
     init {
-        setCondition(Conditions::playerOnly);
+        setCondition(Conditions::playerOnly)
         setDefaultExecutor { sender, _ ->
             sender.sendMessage("Usage: /giveitems <item>")
         }
 
-        addSyntax({ sender, _ ->
+        val itemType = ArgumentString("item")
+
+        addSyntax({ sender, ctx ->
             if (sender is Player) {
                 sender.sendMessage("Giving Items")
-                Main.INSTANCE.getCustomItemHandler().get("INCREMENT_SPEED")?.let { sender.inventory.addItemStack(it.getItemStack()) } ?: run {
+                val item = ctx.get(itemType)
+                Main.INSTANCE.getItemRepository().getFromID(item)?.let { sender.inventory.addItemStack(it.getItemStack()) } ?: run {
                     sender.sendMessage("Invalid Item.")
                 }
-                Main.INSTANCE.getCustomItemHandler().get("DECREMENT_SPEED")?.let { sender.inventory.addItemStack(it.getItemStack()) } ?: run {
-                    sender.sendMessage("Invalid Item.")
-                }
-
             }
-        })
+        }, itemType)
     }
 }

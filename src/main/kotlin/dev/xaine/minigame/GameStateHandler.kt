@@ -1,8 +1,3 @@
 package dev.xaine.minigame
 
-class GameStateHandler {
-
-
-
-
-}
+class GameStateHandler

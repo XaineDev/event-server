@@ -11,6 +11,8 @@ class GameInstantiateTest {
     @Test
     fun testFromClass() {
         val gameContainer = GameContainer()
+        gameContainer.register(GameUltraSequencer::class)
+
         val ultraSequencer = gameContainer.getGame<GameUltraSequencer>()
         assert(ultraSequencer != null)
         val gameID = ultraSequencer?.getGameID()
@@ -20,6 +22,8 @@ class GameInstantiateTest {
     @Test
     fun testFromID() {
         val gameContainer = GameContainer()
+        gameContainer.register(GameUltraSequencer::class)
+
         val ultraSequencer = gameContainer.getGameFromID("ultrasequencer")
         assert(ultraSequencer != null)
         val gameID = ultraSequencer?.getGameID()
@@ -29,6 +33,7 @@ class GameInstantiateTest {
     @Test
     fun benchmarkTest() {
         val gameContainer = GameContainer()
+        gameContainer.register(GameUltraSequencer::class)
 
         val testLength = 1000
         val tests = 100

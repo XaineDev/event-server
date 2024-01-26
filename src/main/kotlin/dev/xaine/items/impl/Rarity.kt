@@ -2,6 +2,7 @@ package dev.xaine.items.impl
 
 import dev.xaine.items.ItemType
 import dev.xaine.items.attributes.Attribute
+import dev.xaine.util.ComponentUtil
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
@@ -36,17 +37,17 @@ enum class Rarity(private val colour: Color, private val upgradable: Boolean = t
 
     fun getComponent(upgraded: Boolean, itemType: ItemType? = null): Component {
         if (itemType == null || itemType.toString().isEmpty()) {
-            val withoutSuffix = Component.text(getRarityString()).decoration(TextDecoration.ITALIC, false)
+            val withoutSuffix = ComponentUtil.text(getRarityString())
             return if (!upgraded) withoutSuffix.color { colour.asRGB() } else surround(withoutSuffix).color { colour.asRGB() }
         } else {
-            val withSuffix = Component.text("${getRarityString()} $itemType").decoration(TextDecoration.ITALIC, false)
+            val withSuffix = ComponentUtil.text("${getRarityString()} $itemType")
             return if (!upgraded) withSuffix.color { colour.asRGB() } else surround(withSuffix).color { colour.asRGB() }
         }
     }
 
     private fun surround(component: Component): Component {
-        val spaceComponent = Component.text(" ").decoration(TextDecoration.ITALIC, false)
-        val obfuscatedComponent = Component.text("a").decoration(TextDecoration.ITALIC, false).decorate(TextDecoration.BOLD).decorate(TextDecoration.OBFUSCATED)
+        val spaceComponent = ComponentUtil.text(" ")
+        val obfuscatedComponent = ComponentUtil.text("a").decorate(TextDecoration.BOLD).decorate(TextDecoration.OBFUSCATED)
         return obfuscatedComponent.append(spaceComponent).append(component.decoration(TextDecoration.OBFUSCATED, false)).append(spaceComponent).append(obfuscatedComponent)
     }
 }

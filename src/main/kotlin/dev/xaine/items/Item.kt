@@ -4,8 +4,10 @@ import dev.xaine.items.attributes.Attribute
 import dev.xaine.items.attributes.IAttributeValue
 import dev.xaine.items.attributes.impl.IntAttribute
 import dev.xaine.items.impl.Rarity
+import dev.xaine.util.ComponentUtil
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
 import net.minestom.server.color.Color
 import net.minestom.server.item.ItemStack
@@ -13,21 +15,43 @@ import net.minestom.server.tag.Tag
 import java.util.*
 import kotlin.collections.HashMap
 
-interface Item {
+abstract class Item(val itemID: String) {
+    abstract val itemName: Component
+    abstract val itemStackBuilder: ItemStack.Builder
+    protected open val itemType: ItemType = ItemType.ITEM
+    protected open var defaultLore: Array<Component> = arrayOf()
+    private val defaultAttributes: EnumMap<Attribute, IAttributeValue<*>> = EnumMap(Attribute::class.java)
+    private val specialAttributes: HashMap<String, IAttributeValue<*>> = HashMap()
+    protected open val defaultRarity: Rarity = Rarity.COMMON
 
-    val itemID: String
-    val itemName: Component
-    val itemStackBuilder: ItemStack.Builder
-    val itemType: ItemType
-    var defaultLore: Array<Component>
-    val defaultAttributes: EnumMap<Attribute, Float>
-    val specialAttributes: HashMap<String, IAttributeValue<*>>
-    val defaultRarity: Rarity
-
+    private val loreRegex: Regex = Regex("(.{1,40}(?:(?<=\\s)|(?<=[.!?])))\\s*|\\S+|\\n")
     fun formatLore(lore: String, color: Color = Color(NamedTextColor.GRAY)): Array<Component> {
-        return Array(0){Component.empty()}
+        val lines = loreRegex.findAll(lore).map { it.value }
+        val textColor = TextColor { color.asRGB() }
+        return Array(lines.count()){ ComponentUtil.text(lines.elementAt(it)).color(textColor) }
     }
 
+    fun getAttributeLore(): Array<Component> {
+        val components = MutableList<Component>(defaultAttributes.size+1) { Component.empty() }
+        if (defaultAttributes.isEmpty()) return components.toTypedArray()
+        var index = 0;
+        for (entry in defaultAttributes) {
+            val attrib = entry.key
+            var attribModification = "+${entry.value.get().toString()}"
+            if (attrib.percentage) {
+                attribModification += "%"
+            }
+
+            components[index] = ComponentUtil.text("$attrib: ").color(NamedTextColor.GRAY)
+                .append(ComponentUtil.text(attribModification).color(attrib.attributeColor))
+            index++
+        }
+        return components.toTypedArray()
+    }
+
+    fun registerDefaultAttribute(key: Attribute, value: IAttributeValue<*>) {
+        defaultAttributes[key] = value
+    }
     fun registerAttribute(key: String, value: IAttributeValue<*>) {
         specialAttributes[key] = value
     }
@@ -52,11 +76,10 @@ interface Item {
     fun getItemStack(): ItemStack {
         var rarityUpgradedComponent = arrayOf(Component.empty())
         if (isUpgraded()) {
-            rarityUpgradedComponent = arrayOf(Component.empty(), Component.text("RARITY UPGRADED")
+            rarityUpgradedComponent = arrayOf(Component.empty(), ComponentUtil.text("RARITY UPGRADED")
                 .color(NamedTextColor.LIGHT_PURPLE)
-                .decoration(TextDecoration.BOLD, true)
-                .decoration(TextDecoration.ITALIC, false))
+                .decoration(TextDecoration.BOLD, true))
         }
-        return itemStackBuilder.displayName(itemName).lore(*defaultLore, *rarityUpgradedComponent, getCurrentRarity().getComponent(isUpgraded(), itemType)).build()
+        return itemStackBuilder.displayName(itemName).lore(*getAttributeLore(), *defaultLore, *rarityUpgradedComponent, getCurrentRarity().getComponent(isUpgraded(), itemType)).build()
     }
 }
